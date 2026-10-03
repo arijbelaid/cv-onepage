@@ -1,76 +1,58 @@
-# CV One Page — Arij Belaid
+# DevSecOps Portfolio — Arij Belaid
 
-Mini CV one page responsive développé en **HTML5**, **CSS3** et **JavaScript**,
-dans le cadre d'un projet DevOps & Cloud.
+Application **one page** évolutive, réalisée en **HTML5 / CSS3 / JavaScript**,
+présentant le profil, les compétences et les projets d'une étudiante en
+**Master Pro DevOps & Cloud**.
 
-## 👩‍💻 Profil
+## 👩‍💻 À propos
 
 Étudiante en **Master Pro DevOps & Cloud**, titulaire d'une **Licence IT —
-Développement de Systèmes d'Information**.
+Développement de Systèmes d'Information**. Passionnée par l'automatisation,
+la conteneurisation, la CI/CD et la sécurisation d'infrastructures Linux.
 
-## 📸 Aperçu
+## 📸 Aperçu de la nouvelle version
 
-![Capture d'écran du CV](screenshot.png)
+![Capture d'écran du DevSecOps Portfolio](./screenshot.png)
+
+## 🆕 Principales améliorations (v2)
+
+| Domaine | v1 — Mini CV | v2 — DevSecOps Portfolio |
+|---|---|---|
+| **Structure** | CV statique | Application one page avec navbar fixe |
+| **Sections** | Profil, Compétences, Formation | **About / Skills / Projects / Experience / Contact** (obligatoires) |
+| **Navigation** | Aucune | Menu sticky + smooth scroll + menu mobile |
+| **Design** | Cartes simples | Thème dark "DevOps" + gradients cyan/violet |
+| **Hero** | Titre simple | **Terminal animé** (effet typing) |
+| **Compétences** | Tags statiques | **Barres de progression animées** + icônes |
+| **Projets** | Liste simple | **Cartes projets** avec tags technologiques |
+| **Expérience** | Liste | **Timeline verticale** avec points animés |
+| **Contact** | Texte brut | Cartes cliquables (mailto, GitHub, LinkedIn) |
+| **Animations** | Fade-in basique | IntersectionObserver + reveal au scroll |
+| **Responsive** | Basique | Complet (navbar mobile, grilles adaptatives) |
+| **Accessibilité** | — | `aria-label`, focus visibles, contrastes |
 
 ## 🛠️ Stack technique
 
-- **HTML5** — structure sémantique
-- **CSS3** — Flexbox, Grid, variables CSS, animations
-- **JavaScript (ES6)** — IntersectionObserver, DOM, effet typing
-- **Git / GitHub** — versionnement et publication
+- **HTML5** — structure sémantique (`<nav>`, `<section>`, `<article>`, `<header>`, `<footer>`)
+- **CSS3** — variables, Grid, Flexbox, gradients, animations, backdrop-filter
+- **JavaScript (ES6)** — IntersectionObserver, gestion événementielle, DOM
+- **Git / GitHub** — versionnement + push via **SSH**
 
-## 🔐 Activation des push GitHub via SSH
+## 🔐 Push GitHub via SSH
 
-### 1. Génération de la clé SSH
-
-\`\`\`bash
+```bash
+# 1. Générer la clé
 ssh-keygen -t ed25519 -C "aarijbelaid@gmail.com"
-cat ~/.ssh/id_ed25519.pub
-\`\`\`
 
-Clé publique générée :
-\`\`\`
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIfeNBGqKovV1Z1ttYTiE18Jf2jPGyzG8c+cJ2qhPJml aarijbelaid@gmail.com
-\`\`\`
+# 2. Ajouter la clé publique sur GitHub :
+#    Settings → SSH and GPG keys → New SSH key
 
-### 2. Ajout de la clé sur GitHub
-
-- GitHub → Settings → SSH and GPG keys → New SSH key
-- Titre : `VM Ubuntu DevOps`
-- Key : (coller la clé publique ci-dessus)
-- Add SSH key
-
-### 3. Test de la connexion
-
-\`\`\`bash
+# 3. Tester
 ssh -T git@github.com
 # → Hi arijbelaid! You've successfully authenticated...
-\`\`\`
 
-### 4. Configuration du dépôt local pour utiliser SSH
-
-\`\`\`bash
+# 4. Configurer le remote en SSH
 git remote set-url origin git@github.com:arijbelaid/cv-onepage.git
-git remote -v
+
+# 5. Pousser
 git push -u origin main
-\`\`\`
-
-## 🚀 Lancer le projet en local
-
-\`\`\`bash
-git clone git@github.com:arijbelaid/cv-onepage.git
-cd cv-onepage
-python3 -m http.server 8000
-\`\`\`
-
-Puis ouvrir : [http://localhost:8000](http://localhost:8000)
-
-## 👤 Auteur
-
-**Arij Belaid**
-- GitHub : [@arijbelaid](https://github.com/arijbelaid)
-- Email : aarijbelaid@gmail.com
-
-## 📄 Licence
-
-Projet personnel — libre d'utilisation à des fins pédagogiques.
