@@ -1,0 +1,29 @@
+# ============================================================
+# DevSecOps Portfolio — Docker Compose
+# ============================================================
+# Déploiement du portfolio servi par Nginx (image cv-docker)
+# Lancement : docker compose up -d
+# Arrêt     : docker compose down
+# ============================================================
+
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cv-docker:latest
+    container_name: cv-portfolio-compose
+    ports:
+      - "8083:80"
+    restart: unless-stopped
+    environment:
+      - TZ=Africa/Tunis
+    labels:
+      - "com.arijbelaid.portfolio=true"
+      - "com.arijbelaid.version=1.0"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"] 
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
