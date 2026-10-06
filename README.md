@@ -5,6 +5,15 @@ Application **One Page** évolutive réalisée en **HTML5 / CSS3 / JavaScript**,
 Le projet a été réalisé sur une **VM Ubuntu Server** et permet de mettre en pratique l'administration Linux, la sécurisation SSH, la conteneurisation, le versionnement Git et les premières étapes d'automatisation.
 
 ---
+## 📄 Rapport complet (PDF)
+
+Le rapport détaillé du projet est disponible ici :
+
+👉 **[Télécharger le rapport PDF](./rapport-devsecops-arij-belaid.pdf)**
+
+---
+
+
 
 ## 📋 Sommaire
 
