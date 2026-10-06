@@ -14,56 +14,62 @@ la conteneurisation, la CI/CD, l'IaC et la sécurisation d'infrastructures Linux
 
 👉 **https://arijbelaid.github.io/cv-onepage/**
 
-## 📸 Aperçu — Version DevSecOps Portfolio v3
+## 📸 Aperçu — Version DevSecOps Portfolio v4
 
 ![Capture d'écran du DevSecOps Portfolio](./screenshot.png)
 
-## 🛠️ DevSecOps Skills (technologies du projet)
+## 🆕 Section Projects — Génération dynamique en JavaScript
 
-| Technologie | Rôle | Statut |
-|---|---|---|
-| **Git** | Version Control | ✅ Utilisé dans le projet |
-| **Docker** | Containerization | ✅ Utilisé dans le projet |
-| **Jenkins** | CI/CD | ✅ Utilisé dans le projet |
-| **Kubernetes** | Orchestration | 📚 En apprentissage |
-| **Ansible** | Configuration Management | 📚 En apprentissage |
-| **Terraform** | Infrastructure as Code | 📚 En apprentissage |
-| **Argo CD** | GitOps | 📚 En apprentissage |
+La section **Projects** est générée dynamiquement en JavaScript à partir d'un
+**tableau d'objets**. Aucune carte n'est écrite en HTML : le DOM est rempli au
+chargement via `innerHTML`.
 
-Ces technologies couvrent l'ensemble de la chaîne DevSecOps :
-`Code → Build → Test → Deploy → Orchestrate → IaC → GitOps`
+### Extrait du code JavaScript (`script.js`)
 
-## 🆕 Évolution des versions
+```javascript
+/* Tableau d'objets — données des projets */
+const projectsData = [
+    {
+        title: "Chaîne CI/CD complète sur Ubuntu Server",
+        year: "2026",
+        description: "Installation et durcissement d'un serveur Ubuntu Server 26.04, déploiement de Docker et Jenkins en services systemd...",
+        tags: ["Ubuntu", "Docker", "Jenkins", "SSH", "UFW"],
+        link: "https://github.com/arijbelaid/cv-onepage"
+    },
+    {
+        title: "DevSecOps Portfolio (ce site)",
+        year: "2026",
+        description: "Application one page responsive développée en HTML5 / CSS3 / JS, versionnée avec Git et publiée sur GitHub Pages.",
+        tags: ["HTML5", "CSS3", "JavaScript", "Git", "GitHub Pages"],
+        link: "https://github.com/arijbelaid/cv-onepage"
+    },
+    // ...
+];
 
-| Version | Description |
-|---|---|
-| **v1 — Mini CV** | CV one page statique (Profil / Compétences / Formation) |
-| **v2 — DevSecOps Portfolio** | + Navbar + Hero terminal + About/Skills/Projects/Experience/Contact + design dark + animations |
-| **v3 — DevSecOps Skills** | + Section dédiée à la stack DevSecOps (Git, Docker, Jenkins, Kubernetes, Ansible, Terraform, Argo CD) + pipeline visuel |
+/* Génère le HTML d'une carte projet */
+function createProjectCard(project) {
+    const tagsHTML = project.tags
+        .map(tag => `<li>${tag}</li>`)
+        .join('');
 
-## 🛠️ Stack technique du site
+    return `
+        <article class="project-card">
+            <div class="project-header">
+                <span class="project-folder">📁</span>
+                <span class="project-year">${project.year}</span>
+            </div>
+            <h3>${project.title}</h3>
+            <p>${project.description}</p>
+            <ul class="project-tags">${tagsHTML}</ul>
+        </article>
+    `;
+}
 
-- **HTML5** — structure sémantique
-- **CSS3** — variables, Grid, Flexbox, gradients, animations
-- **JavaScript (ES6)** — IntersectionObserver, gestion événementielle
-- **Git / GitHub** — versionnement + push via **SSH**
-- **GitHub Pages** — hébergement statique
+/* Injecte tous les projets dans le conteneur */
+function renderProjects() {
+    const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
+    grid.innerHTML = projectsData.map(createProjectCard).join('');
+}
 
-## 🔐 Push GitHub via SSH
-
-```bash
-# 1. Générer la clé
-ssh-keygen -t ed25519 -C "aarijbelaid@gmail.com"
-
-# 2. Ajouter la clé sur GitHub :
-#    Settings → SSH and GPG keys → New SSH key
-
-# 3. Tester
-ssh -T git@github.com
-# → Hi arijbelaid! You've successfully authenticated...
-
-# 4. Configurer le remote en SSH
-git remote set-url origin git@github.com:arijbelaid/cv-onepage.git
-
-# 5. Pousser
-git push -u origin main
+renderProjects();

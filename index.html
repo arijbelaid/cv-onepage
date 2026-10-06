@@ -190,7 +190,7 @@
             </div>
         </section>
 
-        <!-- ============ DEVSECOPS SKILLS (NOUVELLE SECTION) ============ -->
+        <!-- ============ DEVSECOPS SKILLS ============ -->
         <section class="section section-devsecops" id="devsecops">
             <div class="section-header">
                 <span class="section-number">03.</span>
@@ -221,7 +221,6 @@
 
             <div class="devsecops-grid">
 
-                <!-- Git -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon git-icon">🔀</div>
                     <h3>Git</h3>
@@ -235,7 +234,6 @@
                     </div>
                 </div>
 
-                <!-- Docker -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon docker-icon">🐳</div>
                     <h3>Docker</h3>
@@ -249,7 +247,6 @@
                     </div>
                 </div>
 
-                <!-- Jenkins -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon jenkins-icon">🤖</div>
                     <h3>Jenkins</h3>
@@ -263,7 +260,6 @@
                     </div>
                 </div>
 
-                <!-- Kubernetes -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon k8s-icon">☸️</div>
                     <h3>Kubernetes</h3>
@@ -277,7 +273,6 @@
                     </div>
                 </div>
 
-                <!-- Ansible -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon ansible-icon">⚙️</div>
                     <h3>Ansible</h3>
@@ -291,7 +286,6 @@
                     </div>
                 </div>
 
-                <!-- Terraform -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon terraform-icon">🏗️</div>
                     <h3>Terraform</h3>
@@ -305,7 +299,6 @@
                     </div>
                 </div>
 
-                <!-- Argo CD -->
                 <div class="devsecops-card">
                     <div class="devsecops-icon argo-icon">🚀</div>
                     <h3>Argo CD</h3>
@@ -322,76 +315,20 @@
             </div>
         </section>
 
-        <!-- ============ PROJECTS ============ -->
+        <!-- ============ PROJECTS (DYNAMIQUE) ============ -->
         <section class="section" id="projects">
             <div class="section-header">
                 <span class="section-number">04.</span>
                 <h2>Projects</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="projects-grid">
+            <p class="section-intro">
+                Projets générés dynamiquement en JavaScript à partir d'un tableau
+                d'objets — voir <code>script.js</code>.
+            </p>
 
-                <article class="project-card">
-                    <div class="project-header">
-                        <span class="project-folder">📁</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3>Chaîne CI/CD complète sur Ubuntu Server</h3>
-                    <p>
-                        Installation et durcissement d'un serveur Ubuntu Server 26.04,
-                        déploiement de Docker et Jenkins en services systemd,
-                        configuration d'un accès SSH sécurisé par clé ED25519
-                        et gestion du pare-feu UFW.
-                    </p>
-                    <ul class="project-tags">
-                        <li>Ubuntu</li>
-                        <li>Docker</li>
-                        <li>Jenkins</li>
-                        <li>SSH</li>
-                        <li>UFW</li>
-                    </ul>
-                </article>
-
-                <article class="project-card">
-                    <div class="project-header">
-                        <span class="project-folder">📁</span>
-                        <span class="project-year">2026</span>
-                    </div>
-                    <h3>DevSecOps Portfolio (ce site)</h3>
-                    <p>
-                        Application one page responsive développée en HTML5 / CSS3 / JS,
-                        versionnée avec Git et publiée sur GitHub Pages. Design inspiré
-                        des portfolios DevOps modernes.
-                    </p>
-                    <ul class="project-tags">
-                        <li>HTML5</li>
-                        <li>CSS3</li>
-                        <li>JavaScript</li>
-                        <li>Git</li>
-                        <li>GitHub Pages</li>
-                    </ul>
-                </article>
-
-                <article class="project-card">
-                    <div class="project-header">
-                        <span class="project-folder">📁</span>
-                        <span class="project-year">2025</span>
-                    </div>
-                    <h3>Application web de gestion</h3>
-                    <p>
-                        Développement d'une application de gestion avec base de données
-                        MySQL, front-end HTML/CSS/JS et back-end PHP. Projet de fin
-                        de Licence IT.
-                    </p>
-                    <ul class="project-tags">
-                        <li>PHP</li>
-                        <li>MySQL</li>
-                        <li>HTML/CSS</li>
-                        <li>JavaScript</li>
-                    </ul>
-                </article>
-
-            </div>
+            <!-- Conteneur vide : rempli par JavaScript -->
+            <div class="projects-grid" id="projectsGrid"></div>
         </section>
 
         <!-- ============ EXPERIENCE ============ -->
