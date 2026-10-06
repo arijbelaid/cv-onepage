@@ -22,6 +22,7 @@
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
+                <li><a href="#devsecops">DevSecOps</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -46,10 +47,10 @@
             </p>
             <p class="hero-desc">
                 Je construis, sécurise et automatise des infrastructures cloud modernes.
-                Passionnée par la CI/CD, la conteneurisation et l'Infrastructure as Code.
+                Passionnée par la CI/CD, la conteneurisation, l'IaC et le GitOps.
             </p>
             <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+                <a href="#devsecops" class="btn btn-primary">Voir ma stack DevSecOps</a>
                 <a href="#contact" class="btn btn-outline">Me contacter</a>
             </div>
             <div class="hero-terminal">
@@ -61,9 +62,9 @@
                 </div>
                 <div class="terminal-body">
                     <p><span class="prompt">$</span> whoami</p>
-                    <p class="output">arij.belaid — DevOps Engineer in training</p>
-                    <p><span class="prompt">$</span> cat stack.txt</p>
-                    <p class="output">[ Docker, Jenkins, Git, Linux, CI/CD, Cloud ]</p>
+                    <p class="output">arij.belaid — DevSecOps Engineer in training</p>
+                    <p><span class="prompt">$</span> cat devsecops-stack.txt</p>
+                    <p class="output">[ Git · Docker · Jenkins · Kubernetes · Ansible · Terraform · Argo CD ]</p>
                     <p><span class="prompt">$</span> <span class="cursor">█</span></p>
                 </div>
             </div>
@@ -90,8 +91,8 @@
                         Mon parcours m'a permis d'acquérir une double compétence :
                         <strong>développement logiciel</strong> et
                         <strong>opérations / cloud</strong>. J'aime particulièrement
-                        concevoir des pipelines CI/CD, conteneuriser des applications
-                        et sécuriser des serveurs Linux.
+                        concevoir des pipelines CI/CD, conteneuriser des applications,
+                        automatiser l'infrastructure et sécuriser des serveurs Linux.
                     </p>
                     <p>
                         Mon objectif : devenir <strong>DevSecOps Engineer</strong> et
@@ -189,10 +190,142 @@
             </div>
         </section>
 
+        <!-- ============ DEVSECOPS SKILLS (NOUVELLE SECTION) ============ -->
+        <section class="section section-devsecops" id="devsecops">
+            <div class="section-header">
+                <span class="section-number">03.</span>
+                <h2>DevSecOps Skills</h2>
+                <div class="section-line"></div>
+            </div>
+            <p class="section-intro">
+                Technologies de la chaîne DevSecOps utilisées et étudiées dans le cadre
+                de mon projet et de ma formation — du versionnement du code au
+                déploiement GitOps.
+            </p>
+
+            <div class="devsecops-pipeline">
+                <span class="pipeline-step">Code</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">Build</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">Test</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">Deploy</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">Orchestrate</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">IaC</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-step">GitOps</span>
+            </div>
+
+            <div class="devsecops-grid">
+
+                <!-- Git -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon git-icon">🔀</div>
+                    <h3>Git</h3>
+                    <p class="devsecops-role">Version Control</p>
+                    <p class="devsecops-desc">
+                        Gestion de versions distribuée. Utilisé pour versionner le code,
+                        gérer les branches et collaborer via GitHub.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge used">Utilisé dans le projet</span>
+                    </div>
+                </div>
+
+                <!-- Docker -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon docker-icon">🐳</div>
+                    <h3>Docker</h3>
+                    <p class="devsecops-role">Containerization</p>
+                    <p class="devsecops-desc">
+                        Conteneurisation d'applications. Images légères, isolation des
+                        processus et déploiement reproductible.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge used">Utilisé dans le projet</span>
+                    </div>
+                </div>
+
+                <!-- Jenkins -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon jenkins-icon">🤖</div>
+                    <h3>Jenkins</h3>
+                    <p class="devsecops-role">CI/CD</p>
+                    <p class="devsecops-desc">
+                        Serveur d'automatisation. Orchestration des pipelines de build,
+                        test et déploiement continu.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge used">Utilisé dans le projet</span>
+                    </div>
+                </div>
+
+                <!-- Kubernetes -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon k8s-icon">☸️</div>
+                    <h3>Kubernetes</h3>
+                    <p class="devsecops-role">Orchestration</p>
+                    <p class="devsecops-desc">
+                        Orchestrateur de conteneurs. Gestion du scaling, du self-healing
+                        et du déploiement déclaratif à grande échelle.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge learning">En apprentissage</span>
+                    </div>
+                </div>
+
+                <!-- Ansible -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon ansible-icon">⚙️</div>
+                    <h3>Ansible</h3>
+                    <p class="devsecops-role">Configuration Management</p>
+                    <p class="devsecops-desc">
+                        Automatisation de la configuration des serveurs via des playbooks
+                        YAML, sans agent.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge learning">En apprentissage</span>
+                    </div>
+                </div>
+
+                <!-- Terraform -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon terraform-icon">🏗️</div>
+                    <h3>Terraform</h3>
+                    <p class="devsecops-role">Infrastructure as Code</p>
+                    <p class="devsecops-desc">
+                        Provisionnement d'infrastructure déclaratif multi-cloud avec
+                        HCL. Versionné comme du code applicatif.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge learning">En apprentissage</span>
+                    </div>
+                </div>
+
+                <!-- Argo CD -->
+                <div class="devsecops-card">
+                    <div class="devsecops-icon argo-icon">🚀</div>
+                    <h3>Argo CD</h3>
+                    <p class="devsecops-role">GitOps</p>
+                    <p class="devsecops-desc">
+                        Déploiement continu déclaratif basé sur Git comme source de
+                        vérité pour l'état des clusters Kubernetes.
+                    </p>
+                    <div class="devsecops-meta">
+                        <span class="badge learning">En apprentissage</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- ============ PROJECTS ============ -->
         <section class="section" id="projects">
             <div class="section-header">
-                <span class="section-number">03.</span>
+                <span class="section-number">04.</span>
                 <h2>Projects</h2>
                 <div class="section-line"></div>
             </div>
@@ -227,14 +360,15 @@
                     <h3>DevSecOps Portfolio (ce site)</h3>
                     <p>
                         Application one page responsive développée en HTML5 / CSS3 / JS,
-                        versionnée avec Git et publiée sur GitHub. Design inspiré des
-                        portfolios DevOps modernes.
+                        versionnée avec Git et publiée sur GitHub Pages. Design inspiré
+                        des portfolios DevOps modernes.
                     </p>
                     <ul class="project-tags">
                         <li>HTML5</li>
                         <li>CSS3</li>
                         <li>JavaScript</li>
                         <li>Git</li>
+                        <li>GitHub Pages</li>
                     </ul>
                 </article>
 
@@ -263,7 +397,7 @@
         <!-- ============ EXPERIENCE ============ -->
         <section class="section" id="experience">
             <div class="section-header">
-                <span class="section-number">04.</span>
+                <span class="section-number">05.</span>
                 <h2>Experience</h2>
                 <div class="section-line"></div>
             </div>
@@ -281,6 +415,7 @@
                             <li>Mise en place d'une chaîne CI/CD complète (Jenkins + Docker)</li>
                             <li>Durcissement d'un serveur Ubuntu (SSH, UFW, mises à jour)</li>
                             <li>Versionnement et publication de projets sur GitHub via SSH</li>
+                            <li>Déploiement d'un portfolio via GitHub Pages</li>
                         </ul>
                     </div>
                 </div>
@@ -323,7 +458,7 @@
         <!-- ============ CONTACT ============ -->
         <section class="section" id="contact">
             <div class="section-header">
-                <span class="section-number">05.</span>
+                <span class="section-number">06.</span>
                 <h2>Contact</h2>
                 <div class="section-line"></div>
             </div>
@@ -359,7 +494,7 @@
         <p class="footer-code">
             <span class="footer-prompt">$</span> echo "© <span id="year"></span> Arij Belaid — DevSecOps Portfolio"
         </p>
-        <p class="footer-note">Built with HTML5 · CSS3 · JavaScript · Git</p>
+        <p class="footer-note">Built with HTML5 · CSS3 · JavaScript · Git · GitHub Pages</p>
     </footer>
 
     <script src="script.js"></script>

@@ -9,41 +9,31 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ============================================================
-       1. Année dynamique
-       ============================================================ */
+    /* 1. Année dynamique */
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    /* ============================================================
-       2. Navbar : effet au scroll
-       ============================================================ */
+    /* 2. Navbar : effet au scroll */
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 40) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
     });
 
-    /* ============================================================
-       3. Menu mobile (hamburger)
-       ============================================================ */
+    /* 3. Menu mobile */
     const navToggle = document.getElementById('navToggle');
     const navLinks  = document.querySelector('.nav-links');
 
     if (navToggle && navLinks) {
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
+        navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => navLinks.classList.remove('open'));
         });
     }
 
-    /* ============================================================
-       4. Reveal au scroll (IntersectionObserver)
-       ============================================================ */
+    /* 4. Reveal au scroll */
     const revealEls = document.querySelectorAll(
-        '.section, .skill-card, .project-card, .timeline-item, .contact-card, .about-card'
+        '.section, .skill-card, .project-card, .timeline-item, .contact-card, .about-card, .devsecops-card, .devsecops-pipeline'
     );
 
     const revealObserver = new IntersectionObserver((entries) => {
@@ -60,16 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObserver.observe(el);
     });
 
-    /* ============================================================
-       5. Barres de compétences animées
-       ============================================================ */
+    /* 5. Barres de compétences animées */
     const skillBars = document.querySelectorAll('.skill-bar');
 
     const skillObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const bar  = entry.target;
-                const fill = bar.querySelector('.skill-bar-fill');
+                const bar   = entry.target;
+                const fill  = bar.querySelector('.skill-bar-fill');
                 const level = bar.dataset.level || 0;
                 fill.style.width = level + '%';
                 skillObserver.unobserve(bar);
@@ -79,9 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     skillBars.forEach(bar => skillObserver.observe(bar));
 
-    /* ============================================================
-       6. Smooth scroll pour les ancres internes
-       ============================================================ */
+    /* 6. Smooth scroll pour les ancres internes */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const target = document.querySelector(this.getAttribute('href'));
@@ -92,11 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* ============================================================
-       7. Signature console
-       ============================================================ */
+    /* 7. Signature console */
     console.log('%c🛡️  DevSecOps Portfolio — Arij Belaid',
         'color:#00d9ff;font-size:14px;font-weight:bold;');
-    console.log('%cStack: HTML5 · CSS3 · JavaScript · Git',
+    console.log('%cStack: Git · Docker · Jenkins · Kubernetes · Ansible · Terraform · Argo CD',
         'color:#7c3aed;font-size:12px;');
 });

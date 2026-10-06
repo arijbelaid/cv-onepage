@@ -1,42 +1,53 @@
 # DevSecOps Portfolio — Arij Belaid
 
 Application **one page** évolutive, réalisée en **HTML5 / CSS3 / JavaScript**,
-présentant le profil, les compétences et les projets d'une étudiante en
-**Master Pro DevOps & Cloud**.
+présentant le profil, les compétences, la stack DevSecOps, les projets et
+l'expérience d'une étudiante en **Master Pro DevOps & Cloud**.
 
 ## 👩‍💻 À propos
 
 Étudiante en **Master Pro DevOps & Cloud**, titulaire d'une **Licence IT —
 Développement de Systèmes d'Information**. Passionnée par l'automatisation,
-la conteneurisation, la CI/CD et la sécurisation d'infrastructures Linux.
+la conteneurisation, la CI/CD, l'IaC et la sécurisation d'infrastructures Linux.
 
-## 📸 Aperçu de la nouvelle version
+## 🌐 Démo en ligne
+
+👉 **https://arijbelaid.github.io/cv-onepage/**
+
+## 📸 Aperçu — Version DevSecOps Portfolio v3
 
 ![Capture d'écran du DevSecOps Portfolio](./screenshot.png)
 
-## 🆕 Principales améliorations (v2)
+## 🛠️ DevSecOps Skills (technologies du projet)
 
-| Domaine | v1 — Mini CV | v2 — DevSecOps Portfolio |
+| Technologie | Rôle | Statut |
 |---|---|---|
-| **Structure** | CV statique | Application one page avec navbar fixe |
-| **Sections** | Profil, Compétences, Formation | **About / Skills / Projects / Experience / Contact** (obligatoires) |
-| **Navigation** | Aucune | Menu sticky + smooth scroll + menu mobile |
-| **Design** | Cartes simples | Thème dark "DevOps" + gradients cyan/violet |
-| **Hero** | Titre simple | **Terminal animé** (effet typing) |
-| **Compétences** | Tags statiques | **Barres de progression animées** + icônes |
-| **Projets** | Liste simple | **Cartes projets** avec tags technologiques |
-| **Expérience** | Liste | **Timeline verticale** avec points animés |
-| **Contact** | Texte brut | Cartes cliquables (mailto, GitHub, LinkedIn) |
-| **Animations** | Fade-in basique | IntersectionObserver + reveal au scroll |
-| **Responsive** | Basique | Complet (navbar mobile, grilles adaptatives) |
-| **Accessibilité** | — | `aria-label`, focus visibles, contrastes |
+| **Git** | Version Control | ✅ Utilisé dans le projet |
+| **Docker** | Containerization | ✅ Utilisé dans le projet |
+| **Jenkins** | CI/CD | ✅ Utilisé dans le projet |
+| **Kubernetes** | Orchestration | 📚 En apprentissage |
+| **Ansible** | Configuration Management | 📚 En apprentissage |
+| **Terraform** | Infrastructure as Code | 📚 En apprentissage |
+| **Argo CD** | GitOps | 📚 En apprentissage |
 
-## 🛠️ Stack technique
+Ces technologies couvrent l'ensemble de la chaîne DevSecOps :
+`Code → Build → Test → Deploy → Orchestrate → IaC → GitOps`
 
-- **HTML5** — structure sémantique (`<nav>`, `<section>`, `<article>`, `<header>`, `<footer>`)
-- **CSS3** — variables, Grid, Flexbox, gradients, animations, backdrop-filter
-- **JavaScript (ES6)** — IntersectionObserver, gestion événementielle, DOM
+## 🆕 Évolution des versions
+
+| Version | Description |
+|---|---|
+| **v1 — Mini CV** | CV one page statique (Profil / Compétences / Formation) |
+| **v2 — DevSecOps Portfolio** | + Navbar + Hero terminal + About/Skills/Projects/Experience/Contact + design dark + animations |
+| **v3 — DevSecOps Skills** | + Section dédiée à la stack DevSecOps (Git, Docker, Jenkins, Kubernetes, Ansible, Terraform, Argo CD) + pipeline visuel |
+
+## 🛠️ Stack technique du site
+
+- **HTML5** — structure sémantique
+- **CSS3** — variables, Grid, Flexbox, gradients, animations
+- **JavaScript (ES6)** — IntersectionObserver, gestion événementielle
 - **Git / GitHub** — versionnement + push via **SSH**
+- **GitHub Pages** — hébergement statique
 
 ## 🔐 Push GitHub via SSH
 
@@ -44,7 +55,7 @@ la conteneurisation, la CI/CD et la sécurisation d'infrastructures Linux.
 # 1. Générer la clé
 ssh-keygen -t ed25519 -C "aarijbelaid@gmail.com"
 
-# 2. Ajouter la clé publique sur GitHub :
+# 2. Ajouter la clé sur GitHub :
 #    Settings → SSH and GPG keys → New SSH key
 
 # 3. Tester
