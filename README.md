@@ -1,5 +1,9 @@
 # DevSecOps Portfolio — Arij Belaid
 
+[![GitHub Pages](https://img.shields.io/badge/Demo-Live-success)](https://arijbelaid.github.io/cv-onepage/)
+[![Docker](https://img.shields.io/badge/Docker-cv--docker-blue)](https://hub.docker.com/)
+[![Jenkins](https://img.shields.io/badge/CI%2FCD-Jenkins-red)](https://www.jenkins.io/)
+
 Application **One Page** évolutive réalisée en **HTML5 / CSS3 / JavaScript**, puis progressivement intégrée dans une démarche **DevSecOps** avec **Git, GitHub, SSH, Docker, Nginx, Docker Compose, Jenkins et Vagrant**.
 
 Le projet a été réalisé sur une **VM Ubuntu Server** et permet de mettre en pratique l'administration Linux, la sécurisation SSH, la conteneurisation, le versionnement Git et les premières étapes d'automatisation.
