@@ -1223,6 +1223,66 @@ L'évolution du projet peut être représentée ainsi :
 * VirtualBox
 
 ---
+## 17. Configuration automatique de la VM avec Vagrant
+
+Le **Vagrantfile** a été modifié afin de configurer automatiquement les principaux paramètres de la machine virtuelle :
+
+* Nom de la VM
+* Adresse IP privée
+* Mémoire RAM
+* Nombre de CPU
+
+### ⚙️ Configuration utilisée
+
+```ruby
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "generic/ubuntu2204"
+
+  # Nom de la VM
+  config.vm.hostname = "vagrant-vm"
+
+  # Adresse IP privée
+  config.vm.network "private_network", ip: "192.168.159.130"
+
+  # Configuration des ressources
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    vb.cpus = 2
+  end
+
+end
+```
+
+### 📄 Vagrantfile
+
+![Vagrantfile](captures/22-vagrantfile-q17.png)
+
+### 📄 Configuration complète
+
+![Vagrantfile configuration](captures/22-vagrantfile1-q17.png)
+
+### 🔎 Vérification avec `vagrant status`
+
+Après la configuration, la commande suivante permet de vérifier l'état de la VM :
+
+```bash
+vagrant status
+```
+
+Résultat :
+
+![Vagrant Status](captures/23-vagrant-status.png)
+
+```
+
+### ✅ Résultat
+
+La VM est automatiquement configurée par **Vagrant** avec son nom, son adresse IP privée, sa mémoire RAM et son nombre de CPU définis dans le `Vagrantfile`.
+
+**Attention :** j’ai repris `192.168.159.130` et `vagrant-vm` comme valeurs de configuration. Si ce ne sont pas exactement les valeurs visibles dans tes captures, envoie-moi simplement la capture du `Vagrantfile` et je te redonne la section avec **les valeurs exactes**.
+```
+
 
 # 📁 Structure du projet
 
