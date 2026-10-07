@@ -1255,10 +1255,10 @@ end
 ```
 
 ### 📄 Vagrantfile
+### 📄 Configuration complète
 
 ![Vagrantfile](./captures/22-vagrantfile-q17.png)
 
-### 📄 Configuration complète
 
 ![Vagrantfile configuration](./captures/22-vagrantfile1-q17.png)
 
