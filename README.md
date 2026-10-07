@@ -1256,11 +1256,11 @@ end
 
 ### 📄 Vagrantfile
 
-![Vagrantfile](captures/22-vagrantfile-q17.png)
+![Vagrantfile](./captures/22-vagrantfile-q17.png)
 
 ### 📄 Configuration complète
 
-![Vagrantfile configuration](captures/22-vagrantfile1-q17.png)
+![Vagrantfile configuration](./captures/22-vagrantfile1-q17.png)
 
 ### 🔎 Vérification avec `vagrant status`
 
@@ -1272,7 +1272,7 @@ vagrant status
 
 Résultat :
 
-![Vagrant Status](captures/23-vagrant-status.png)
+![Vagrant Status](./captures/23-vagrant-status.png)
 
 ```
 
