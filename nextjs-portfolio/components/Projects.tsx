@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { projectsData } from "@/data";
 
 export default function Projects() {
@@ -8,11 +9,14 @@ export default function Projects() {
       </h2>
       <div className="space-y-4">
         {projectsData.map((project) => (
-          <div
-            key={project.title}
-            className="bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-cyan-400 transition"
+          <Link
+            key={project.slug}
+            href={`/projects/${project.slug}`}
+            className="block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-cyan-400 transition group"
           >
-            <h3 className="font-semibold text-lg">{project.title}</h3>
+            <h3 className="font-semibold text-lg group-hover:text-cyan-400 transition">
+              {project.title}
+            </h3>
             <p className="text-slate-400 text-sm mt-2">{project.description}</p>
             <div className="flex flex-wrap gap-2 mt-3">
               {project.tags.map((tag) => (
@@ -24,8 +28,16 @@ export default function Projects() {
                 </span>
               ))}
             </div>
-          </div>
+          </Link>
         ))}
+      </div>
+      <div className="mt-6">
+        <Link
+          href="/projects"
+          className="text-cyan-400 hover:underline font-mono text-sm"
+        >
+          Voir tous les projets →
+        </Link>
       </div>
     </section>
   );
