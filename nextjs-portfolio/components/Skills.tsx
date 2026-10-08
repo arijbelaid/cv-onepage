@@ -1,13 +1,4 @@
-const skillsData = [
-  {
-    category: "DevOps & Cloud",
-    items: ["Docker", "Jenkins", "Git / GitHub", "CI/CD", "Linux (Ubuntu Server)"],
-  },
-  {
-    category: "Développement",
-    items: ["HTML5 / CSS3", "JavaScript / TypeScript", "React / Next.js", "Python", "Java"],
-  },
-];
+import { skillsData } from "@/data";
 
 export default function Skills() {
   return (
@@ -17,8 +8,13 @@ export default function Skills() {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {skillsData.map((group) => (
-          <div key={group.category} className="bg-slate-900 border border-slate-800 rounded-lg p-6">
-            <h3 className="font-semibold text-lg mb-3 text-cyan-400">{group.category}</h3>
+          <div
+            key={group.category}
+            className="bg-slate-900 border border-slate-800 rounded-lg p-6"
+          >
+            <h3 className="font-semibold text-lg mb-3 text-cyan-400">
+              {group.category}
+            </h3>
             <ul className="space-y-1 text-slate-300">
               {group.items.map((item) => (
                 <li key={item}>▸ {item}</li>

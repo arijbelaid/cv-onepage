@@ -1,17 +1,4 @@
-const projectsData = [
-  {
-    title: "Chaîne CI/CD complète sur Ubuntu Server",
-    description: "Installation et durcissement d'un serveur Ubuntu Server 26.04, déploiement de Docker et Jenkins.",
-  },
-  {
-    title: "DevSecOps Portfolio (ce site)",
-    description: "Application one-page responsive développée en Next.js 16 et Tailwind CSS.",
-  },
-  {
-    title: "Application web de gestion",
-    description: "Développement d'une application de gestion avec base de données MySQL (PHP/JS).",
-  },
-];
+import { projectsData } from "@/data";
 
 export default function Projects() {
   return (
@@ -27,6 +14,16 @@ export default function Projects() {
           >
             <h3 className="font-semibold text-lg">{project.title}</h3>
             <p className="text-slate-400 text-sm mt-2">{project.description}</p>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-mono bg-cyan-400/10 text-cyan-400 border border-cyan-400/30 px-2 py-1 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         ))}
       </div>
