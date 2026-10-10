@@ -35,7 +35,16 @@ pipeline {
                     sh 'node --version'
                     sh 'npm --version'
                     sh 'npm install'
-                    sh 'ls node_modules | head -10'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🏗️ Construction de l\'application Next.js...'
+                dir('nextjs-portfolio') {
+                    sh 'npm run build'
+                    sh 'ls -la .next/ | head -10'
                 }
             }
         }
