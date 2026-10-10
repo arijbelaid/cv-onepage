@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'nodejs-22'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,6 +25,18 @@ pipeline {
                 sh 'ls -la'
                 sh 'test -f index.html && echo "✓ index.html trouvé"'
                 sh 'test -f nextjs-portfolio/package.json && echo "✓ nextjs-portfolio/package.json trouvé"'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo '📦 Installation des dépendances Next.js...'
+                dir('nextjs-portfolio') {
+                    sh 'node --version'
+                    sh 'npm --version'
+                    sh 'npm install'
+                    sh 'ls node_modules | head -10'
+                }
             }
         }
     }
