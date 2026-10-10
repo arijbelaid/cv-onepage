@@ -19,8 +19,8 @@ pipeline {
             steps {
                 echo '✅ Vérification des fichiers du projet...'
                 sh 'ls -la'
-                sh 'test -f index.html && echo "index.html trouvé"'
-                sh 'test -f nextjs-portfolio/package.json && echo "nextjs-portfolio/package.json trouvé"'
+                sh 'test -f index.html && echo "✓ index.html trouvé"'
+                sh 'test -f nextjs-portfolio/package.json && echo "✓ nextjs-portfolio/package.json trouvé"'
             }
         }
     }
