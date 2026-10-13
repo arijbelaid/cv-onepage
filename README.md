@@ -19,6 +19,7 @@ Le rapport détaillé du projet est disponible ici :
 
 
 
+
 ## 📋 Sommaire
 
 * [1. Installation d'Ubuntu Server et accès SSH](#1-installation-dubuntu-server-et-accès-ssh)
@@ -37,6 +38,15 @@ Le rapport détaillé du projet est disponible ici :
 * [14. Publication sur GitHub via SSH](#14-publication-sur-github-via-ssh)
 * [15. Installation et utilisation de Vagrant](#15-installation-et-utilisation-de-vagrant)
 * [16. Connexion avec vagrant ssh](#16-connexion-avec-vagrant-ssh)
+* [17. Configuration automatique de la VM avec Vagrant](#17-configuration-automatique-de-la-vm-avec-vagrant)
+* [18. Nouvelle version du Portfolio avec Next.js](#18-nouvelle-version-du-portfolio-avec-nextjs)
+* [19. Refactorisation en composants réutilisables](#19-refactorisation-en-composants-réutilisables)
+* [20. Séparation des données](#20-séparation-des-données-dans-des-fichiers-dédiés)
+* [21. Pages dédiées aux projets](#21-pages-dédiées-aux-projets)
+* [22. Premier Jenkins Pipeline](#22-premier-jenkins-pipeline)
+* [23. Installation des dépendances Next.js](#23-installation-des-dépendances-nextjs-dans-le-pipeline)
+* [24. Build de l'application Next.js](#24-build-de-lapplication-nextjs-dans-le-pipeline)
+
 
 ---
 
