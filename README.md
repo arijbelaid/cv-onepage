@@ -1227,84 +1227,806 @@ L'évolution du projet peut être représentée ainsi :
 * VirtualBox
 
 ---
-## 17. Configuration automatique de la VM avec Vagrant
+# 17. Configuration automatique de la VM avec Vagrant
 
-Le **Vagrantfile** a été modifié afin de configurer automatiquement les principaux paramètres de la machine virtuelle :
+## 🎯 Objectif
 
-* Nom de la VM
-* Adresse IP privée
-* Mémoire RAM
-* Nombre de CPU
+Modifier le `Vagrantfile` afin de configurer automatiquement les principaux paramètres de la machine virtuelle :
 
-### ⚙️ Configuration utilisée
+- Nom de la VM
+- Adresse IP privée
+- Mémoire RAM
+- Nombre de CPU
+
+## 📄 Vagrantfile complet
 
 ```ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
 
+  # Box Ubuntu Server
   config.vm.box = "generic/ubuntu2204"
 
-  # Nom de la VM
-  config.vm.hostname = "vagrant-vm"
+  # 1. Nom de la VM (hostname)
+  config.vm.hostname = "vagrant-ubuntu"
 
-  # Adresse IP privée
-  config.vm.network "private_network", ip: "192.168.159.130"
+  # 2. Adresse IP privée
+  config.vm.network "private_network", ip: "192.168.56.10"
 
-  # Configuration des ressources
+  # Provider VirtualBox
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = 2048
+
+    # Nom dans VirtualBox
+    vb.name = "vagrant-ubuntu"
+
+    # 3. Mémoire RAM (en Mo)
+    vb.memory = 1024
+
+    # 4. Nombre de vCPU
     vb.cpus = 2
+
+    # Désactivation de la virtualisation imbriquée (limitation VT-x de l'hôte)
+    vb.customize ["modifyvm", :id, "--hwvirtex", "off"]
+    vb.customize ["modifyvm", :id, "--nestedpaging", "off"]
+    vb.customize ["modifyvm", :id, "--paravirtprovider", "none"]
   end
+
+  # Provisionnement : mise à jour du système
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update -y
+    apt-get upgrade -y
+  SHELL
 
 end
 ```
 
-### 📄 Vagrantfile
-### 📄 Configuration complète
+## 🔍 Détail des 4 configurations
 
-![Vagrantfile](./captures/22-vagrantfile-q17.png)
+| # | Ligne du Vagrantfile | Valeur | Rôle |
+|---|---|---|---|
+| **1** | `config.vm.hostname` | `vagrant-ubuntu` | Nom d'hôte de la VM |
+| **1** | `vb.name` | `vagrant-ubuntu` | Nom affiché dans VirtualBox |
+| **2** | `config.vm.network "private_network"` | `192.168.56.10` | Adresse IP privée |
+| **3** | `vb.memory` | `1024` (Mo) | Mémoire RAM allouée |
+| **4** | `vb.cpus` | `2` | Nombre de vCPU |
 
+## ✅ Validation du Vagrantfile
 
-![Vagrantfile configuration](./captures/22-vagrantfile1-q17.png)
+```bash
+cd ~/vagrant-ubuntu
+vagrant validate
+```
 
-### 🔎 Vérification avec `vagrant status`
+**Résultat :**
 
-Après la configuration, la commande suivante permet de vérifier l'état de la VM :
+```text
+Vagrantfile validated successfully.
+```
+
+![Validation du Vagrantfile](./captures/22-vagrantfile-q17.png)
+
+## 📸 Capture — Détail du Vagrantfile
+
+![Détail du Vagrantfile](./captures/22-vagrantfile1-q17.png)
+
+## 🔎 État de la VM avec `vagrant status`
 
 ```bash
 vagrant status
 ```
 
-Résultat :
+**Résultat observé :**
 
-![Vagrant Status](./captures/23-vagrant-status.png)
+```text
+Current machine states:
 
+default                   not created (virtualbox)
+
+The environment has not yet been created. Run `vagrant up` to
+create the environment.
 ```
 
-### ✅ Résultat
+⚠️ **Limitation rencontrée** : l'environnement de TP (VM Ubuntu hébergée sur
+VMware, sans support de la virtualisation imbriquée VT-x) ne permet pas à
+`vagrant up` de créer la VM. Le Vagrantfile est néanmoins **valide** et
+**serait pleinement fonctionnel** sur une machine avec accès à la virtualisation
+matérielle.
 
-La VM est automatiquement configurée par **Vagrant** avec son nom, son adresse IP privée, sa mémoire RAM et son nombre de CPU définis dans le `Vagrantfile`.
+![Statut Vagrant](./captures/23-vagrant-status.png)
 
-**Attention :** j’ai repris `192.168.159.130` et `vagrant-vm` comme valeurs de configuration. Si ce ne sont pas exactement les valeurs visibles dans tes captures, envoie-moi simplement la capture du `Vagrantfile` et je te redonne la section avec **les valeurs exactes**.
+## 🎁 Avantages de la configuration dans le Vagrantfile
+
+- ✅ **Reproductibilité** : la VM est identique sur toutes les machines
+- ✅ **Versionnement** : le fichier est versionné dans Git
+- ✅ **Documentation** : la configuration est explicite et lisible
+- ✅ **Automatisation** : `vagrant up` crée la VM sans intervention manuelle
+- ✅ **Modification rapide** : changer la RAM ou les CPU se fait en 1 ligne
+
+---
+
+# 18. Nouvelle version du Portfolio avec Next.js
+
+## 🎯 Objectif
+
+Créer une nouvelle version du DevSecOps Portfolio en utilisant **Next.js 16**,
+en conservant les sections principales : About / Skills / Projects / Experience / Contact.
+
+## 🛠️ Prérequis : Node.js
+
+```bash
+sudo apt update
+sudo apt install -y nodejs npm
+node --version   # → v22.22.1
+npm --version    # → 9.2.0
 ```
 
+## 🚀 Commande de création du projet
+
+```bash
+cd ~
+npx create-next-app@latest devsecops-portfolio-next
+```
+
+**Configuration choisie :**
+
+| Option | Valeur |
+|---|---|
+| TypeScript | Yes |
+| ESLint | Yes |
+| Tailwind CSS | Yes |
+| `src/` directory | No |
+| App Router | Yes |
+| Turbopack | Yes |
+
+## 📁 Structure du projet
+
+```text
+devsecops-portfolio-next/
+├── app/
+│   ├── layout.tsx      # Layout racine (navbar + footer)
+│   ├── page.tsx        # Page d'accueil avec les 5 sections
+│   └── globals.css     # Styles Tailwind
+├── public/
+├── postcss.config.mjs
+├── package.json
+├── next.config.ts
+└── tsconfig.json
+```
+
+## 🏃 Lancer le serveur de développement
+
+```bash
+cd ~/devsecops-portfolio-next
+npm run dev
+```
+
+**Résultat :**
+
+```text
+▲ Next.js 16.4.0 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.159.129:3000
+✓ Ready in 1670ms
+```
+
+Accès depuis la machine physique : **http://192.168.159.129:3000**
+
+## 📸 Capture de l'application Next.js
+
+![Portfolio Next.js](./captures/24-nextjs-portfolio.png)
+
+## ✅ Avantages de Next.js
+
+- ✅ **Composants réutilisables** : architecture modulaire avec React
+- ✅ **Routage par fichiers** : pas de configuration manuelle
+- ✅ **Server Components** : meilleures performances
+- ✅ **Optimisation automatique** : images, polices, scripts
+- ✅ **Écosystème React** : accès à des milliers de bibliothèques
+- ✅ **Prêt pour la production** : build optimisé (`npm run build`)
+
+---
+
+# 19. Refactorisation en composants réutilisables
+
+## 🎯 Objectif
+
+Transformer les principales parties du Portfolio Next.js en **composants
+réutilisables** : Header, About, Skills, Projects, Contact, Footer.
+
+## 📁 Structure des composants
+
+```text
+devsecops-portfolio-next/
+├── app/
+│   ├── layout.tsx          # Importe <Header /> et <Footer />
+│   ├── page.tsx            # Importe <About />, <Skills />, <Projects />, <Contact />
+│   └── globals.css
+├── components/             # ⭐ Nouveau dossier
+│   ├── Header.tsx
+│   ├── About.tsx
+│   ├── Skills.tsx
+│   ├── Projects.tsx
+│   ├── Contact.tsx
+│   └── Footer.tsx
+├── public/
+├── postcss.config.mjs
+└── package.json
+```
+
+## 📋 Détail des 6 composants
+
+| Composant | Fichier | Rôle |
+|---|---|---|
+| **Header** | `components/Header.tsx` | Navbar sticky avec les liens |
+| **About** | `components/About.tsx` | Section 01 — Présentation |
+| **Skills** | `components/Skills.tsx` | Section 02 — Compétences |
+| **Projects** | `components/Projects.tsx` | Section 03 — Projets |
+| **Contact** | `components/Contact.tsx` | Section 05 — Coordonnées |
+| **Footer** | `components/Footer.tsx` | Pied de page |
+
+## 📋 Exemple — `components/Header.tsx`
+
+```tsx
+export default function Header() {
+  return (
+    <header className="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50">
+      <nav className="max-w-6xl mx-auto flex justify-between items-center">
+        <span className="font-mono font-bold text-cyan-400">&lt;AB/&gt;</span>
+        <ul className="flex gap-6 text-sm">
+          <li><a href="#about" className="hover:text-cyan-400">About</a></li>
+          <li><a href="#skills" className="hover:text-cyan-400">Skills</a></li>
+          <li><a href="#projects" className="hover:text-cyan-400">Projects</a></li>
+          <li><a href="#contact" className="hover:text-cyan-400">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+  );
+}
+```
+
+## ✅ Avantages
+
+- ✅ **Réutilisabilité** : chaque composant peut être importé ailleurs
+- ✅ **Lisibilité** : 1 fichier = 1 responsabilité
+- ✅ **Maintenabilité** : modification d'une section = 1 fichier
+- ✅ **Testabilité** : chaque composant testable indépendamment
+- ✅ **Collaboration** : plusieurs devs en parallèle
+
+## 📸 Captures
+
+![Structure des composants](./captures/25-nextjs-components.png)
+
+![Arborescence app et components](./captures/26-nextjs-structure.png)
+
+---
+
+# 20. Séparation des données dans des fichiers dédiés
+
+## 🎯 Objectif
+
+Déplacer les données des projets et compétences dans des **fichiers séparés**
+au lieu de les avoir en dur dans les composants.
+
+## 📁 Structure du dossier `data/`
+
+```text
+devsecops-portfolio-next/
+├── components/
+├── data/                    # ⭐ Nouveau dossier
+│   ├── skills.ts            # Compétences
+│   ├── projects.ts          # Projets
+│   ├── contacts.ts          # Contacts
+│   ├── experiences.ts       # Expériences
+│   └── index.ts             # Barrel file
+└── app/
+```
+
+## 📄 Exemple — `data/skills.ts`
+
+```typescript
+export interface SkillGroup {
+  category: string;
+  items: string[];
+}
+
+export const skillsData: SkillGroup[] = [
+  {
+    category: "DevOps & Cloud",
+    items: ["Docker", "Jenkins", "Git / GitHub", "CI/CD", "Linux (Ubuntu Server)"],
+  },
+  {
+    category: "Développement",
+    items: ["HTML5 / CSS3", "JavaScript / TypeScript", "React / Next.js", "Python", "Java"],
+  },
+];
+```
+
+## 📄 Exemple — `data/projects.ts`
+
+```typescript
+export interface Project {
+  slug: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  tags: string[];
+  year: string;
+  link?: string;
+}
+
+export const projectsData: Project[] = [
+  {
+    slug: "cicd-ubuntu-server",
+    title: "Chaîne CI/CD complète sur Ubuntu Server",
+    description: "Installation et durcissement d'un serveur Ubuntu Server 26.04...",
+    tags: ["Ubuntu", "Docker", "Jenkins", "SSH", "UFW"],
+    year: "2026",
+    link: "https://github.com/arijbelaid/cv-onepage",
+  },
+  // ...
+];
+```
+
+## 📄 Barrel file — `data/index.ts`
+
+```typescript
+export * from "./skills";
+export * from "./projects";
+export * from "./contacts";
+export * from "./experiences";
+```
+
+Ainsi, dans un composant :
+```typescript
+import { skillsData, projectsData } from "@/data";
+```
+
+## ✅ Avantages
+
+- ✅ **Séparation des responsabilités** : données ≠ présentation
+- ✅ **Réutilisabilité** : même donnée utilisable par plusieurs composants
+- ✅ **Maintenabilité** : ajout d'un projet = 1 ligne
+- ✅ **Typage TypeScript** : interfaces garantissant la structure
+
+## 📸 Captures
+
+![Section Projects avec tags depuis data](./captures/27-nextjs-data-projects.png)
+
+![Structure du dossier data](./captures/28-nextjs-data-structure.png)
+
+---
+
+# 21. Pages dédiées aux projets
+
+## 🎯 Objectif
+
+Ajouter des pages dédiées :
+- `/projects` → Liste de tous les projets
+- `/projects/[slug]` → Détail d'un projet
+
+## 📁 Structure des routes
+
+```text
+app/
+├── page.tsx                    # Accueil
+└── projects/                   # ⭐ Nouvelles routes
+    ├── page.tsx                # /projects (liste)
+    └── [slug]/
+        └── page.tsx            # /projects/[slug] (détail)
+```
+
+## 📄 `app/projects/page.tsx` — Liste des projets
+
+```tsx
+import Link from "next/link";
+import { projectsData } from "@/data";
+
+export default function ProjectsPage() {
+  return (
+    <div className="max-w-4xl mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-8">Mes Projets</h1>
+      <div className="space-y-4">
+        {projectsData.map((project) => (
+          <Link key={project.slug} href={`/projects/${project.slug}`}>
+            <article className="bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-cyan-400">
+              <h2 className="text-xl font-semibold">{project.title}</h2>
+              <p className="text-slate-400 text-sm mt-2">{project.description}</p>
+            </article>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## 📄 `app/projects/[slug]/page.tsx` — Détail d'un projet
+
+```tsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { projectsData } from "@/data";
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  return projectsData.map((project) => ({ slug: project.slug }));
+}
+
+export default async function ProjectPage({ params }: Props) {
+  const { slug } = await params;
+  const project = projectsData.find((p) => p.slug === slug);
+
+  if (!project) notFound();
+
+  return (
+    <div className="max-w-3xl mx-auto p-8">
+      <Link href="/projects">← Tous les projets</Link>
+      <h1 className="text-4xl font-bold mt-8">{project.title}</h1>
+      <p className="text-slate-400 mt-4">{project.longDescription}</p>
+    </div>
+  );
+}
+```
+
+## 🔗 Navigation
+
+- Le Header pointe vers `/projects` (avec `<Link>`)
+- Les cartes de la page d'accueil pointent vers `/projects/[slug]`
+- La page détail a un lien retour vers `/projects`
+
+## 📸 Captures
+
+![Liste des projets](./captures/29-nextjs-projects-list.png)
+
+![Détail projet 1](./captures/30-nextjs-project-detail.png)
+
+![Détail projet 2](./captures/31-nextjs-project-detail-2.png)
+
+---
+
+# 22. Premier Jenkins Pipeline
+
+## 🎯 Objectif
+
+Créer un premier **Jenkins Pipeline** capable de récupérer automatiquement
+le dépôt GitHub du DevSecOps Portfolio.
+
+## 📄 Jenkinsfile
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '🔄 Récupération du dépôt GitHub...'
+                checkout scm
+                script {
+                    def branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                    def commit = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    echo "📚 Branche : ${branch}"
+                    echo "🔖 Commit : ${commit}"
+                }
+            }
+        }
+
+        stage('Verify') {
+            steps {
+                echo '✅ Vérification des fichiers du projet...'
+                sh 'ls -la'
+                sh 'test -f index.html && echo "✓ index.html trouvé"'
+                sh 'test -f nextjs-portfolio/package.json && echo "✓ nextjs-portfolio/package.json trouvé"'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline terminé avec succès !'
+        }
+        failure {
+            echo '❌ Le pipeline a échoué.'
+        }
+    }
+}
+```
+
+## ⚙️ Configuration Jenkins
+
+| Paramètre | Valeur |
+|---|---|
+| **Job name** | `DevSecOps-Portfolio-Pipeline` |
+| **Type** | Pipeline |
+| **Definition** | Pipeline script from SCM |
+| **SCM** | Git |
+| **Repository URL** | `https://github.com/arijbelaid/cv-onepage.git` |
+| **Branch Specifier** | `*/main` |
+| **Script Path** | `Jenkinsfile` |
+
+## ✅ Résultat
+
+- Build `#1` : ✅ **SUCCESS**
+- Durée : 30 secondes
+- Récupération automatique du dépôt GitHub confirmée
+
+## 📸 Captures
+
+![Configuration du pipeline](./captures/32-jenkins-pipeline-config.png)
+
+![Build réussi](./captures/33-jenkins-pipeline-build.png)
+
+![Console Output](./captures/34-jenkins-console-output.png)
+
+![Jenkinsfile sur GitHub](./captures/35-jenkinsfile-github.png)
+
+---
+
+# 23. Installation des dépendances Next.js dans le pipeline
+
+## 🎯 Objectif
+
+Ajouter un stage au pipeline Jenkins pour installer automatiquement les
+dépendances du projet Next.js (`npm install`).
+
+## 🛠️ Installation du plugin NodeJS
+
+Dans Jenkins :
+1. **Manage Jenkins** → **Plugins** → **Available plugins**
+2. Rechercher **NodeJS** → Installer
+3. **Manage Jenkins** → **Tools** → **NodeJS** → Ajouter :
+   - **Name** : `nodejs-22`
+   - **Install automatically** : ☑️
+   - **Version** : Node.js 22.x
+
+## 📄 Jenkinsfile mis à jour
+
+```groovy
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'nodejs-22'
+    }
+
+    stages {
+        stage('Checkout') { /* ... */ }
+        stage('Verify') { /* ... */ }
+
+        stage('Install Dependencies') {
+            steps {
+                echo '📦 Installation des dépendances Next.js...'
+                dir('nextjs-portfolio') {
+                    sh 'node --version'
+                    sh 'npm --version'
+                    sh 'npm install'
+                }
+            }
+        }
+    }
+}
+```
+
+## ✅ Résultat
+
+- Build `#2` : ✅ **SUCCESS**
+- Durée : 1 min 14 s
+- **371 packages installés** par `npm install`
+
+## 📸 Captures
+
+![Configuration NodeJS dans Jenkins](./captures/36-jenkins-nodejs-tool.png)
+
+![Stage View avec 3 étapes](./captures/37-jenkins-pipeline-stages-v2.png)
+
+![Console Output avec Install Dependencies](./captures/38-jenkins-install-deps-console.png)
+
+---
+
+# 24. Build de l'application Next.js dans le pipeline
+
+## 🎯 Objectif
+
+Ajouter un stage au pipeline Jenkins pour construire automatiquement
+l'application Next.js en mode production (`npm run build`).
+
+## 📄 Jenkinsfile mis à jour
+
+```groovy
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'nodejs-22'
+    }
+
+    stages {
+        stage('Checkout') { /* ... */ }
+        stage('Verify') { /* ... */ }
+        stage('Install Dependencies') { /* ... */ }
+
+        stage('Build') {
+            steps {
+                echo '🏗️ Construction de l\'application Next.js...'
+                dir('nextjs-portfolio') {
+                    sh 'npm run build'
+                    sh 'ls -la .next/ | head -10'
+                }
+            }
+        }
+    }
+}
+```
+
+## ✅ Résultat
+
+- Build `#3` : ✅ **SUCCESS**
+- `npm run build` exécuté :
+  - **Next.js 16.4.0** (Turbopack)
+  - **Compiled successfully in 6.1s**
+  - **TypeScript vérifié**
+  - **8 pages statiques générées**
+- Dossier **`.next/`** créé avec les fichiers de production
+
+## 📸 Captures
+
+![Stage View avec 4 étapes](./captures/39-jenkins-pipeline-stages-v3.png)
+
+![Console Output npm run build](./captures/40-jenkins-build-console.png)
+
+![Fin du pipeline - SUCCESS](./captures/41-jenkins-build-success.png)
+
+---
+
+# 🏆 Pipeline CI/CD complet
+
+```
+📦 Pipeline DevSecOps-Portfolio-Pipeline
+│
+├── 🟢 Stage 1 : Checkout                (récupère dépôt Git)
+├── 🟢 Stage 2 : Verify                  (vérifie fichiers)
+├── 🟢 Stage 3 : Install Dependencies    (npm install - 371 packages)
+└── 🟢 Stage 4 : Build                   (npm run build - Next.js 16)
+```
+
+---
+
+# 🐳 Architecture du projet
+
+L'évolution du projet peut être représentée ainsi :
+
+```text
+                    ┌─────────────────────┐
+                    │    Machine Windows  │
+                    │      physique      │
+                    └──────────┬──────────┘
+                               │
+                         SSH / HTTP
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Ubuntu Server VM  │
+                    ├─────────────────────┤
+                    │         SSH         │
+                    │       Jenkins       │
+                    │        Docker       │
+                    │       Vagrant       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       Docker        │
+                    │  ┌───────────────┐  │
+                    │  │ Nginx         │  │
+                    │  │ Portfolio     │  │
+                    │  └───────────────┘  │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    Next.js App      │
+                    │  (components/data)  │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                         GitHub Pages
+                               │
+                               ▼
+              https://arijbelaid.github.io/
+                       cv-onepage/
+```
+
+---
+
+# 🧰 Technologies utilisées
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* React / Next.js 16
+* Tailwind CSS
+* TypeScript
+
+## Versionnement
+
+* Git
+* GitHub
+* GitHub Pages
+* SSH
+
+## DevOps / DevSecOps
+
+* Ubuntu Server
+* Docker
+* Nginx
+* Docker Compose
+* Jenkins
+* Kubernetes
+* Ansible
+* Terraform
+* Argo CD
+
+## Automatisation
+
+* Vagrant
+* VirtualBox
+
+---
 
 # 📁 Structure du projet
 
 ```text
 cv-onepage/
 │
-├── index.html
+├── index.html                  # Portfolio v1 (HTML/CSS/JS)
 ├── style.css
 ├── script.js
 │
-├── Dockerfile
+├── Dockerfile                  # Docker (Q10)
 ├── nginx.conf
 ├── .dockerignore
-├── docker-compose.yml
+├── docker-compose.yml          # Docker Compose (Q13)
+│
+├── Jenkinsfile                 # Jenkins Pipeline (Q22-Q24)
+├── Vagrantfile                 # Vagrant (Q17)
 │
 ├── README.md
+├── rapport-devsecops-arij-belaid.pdf
 │
-└── captures/
+├── nextjs-portfolio/           # ⭐ Version Next.js (Q18-Q21)
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── projects/
+│   │   │   ├── page.tsx
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── Header.tsx
+│   │   ├── About.tsx
+│   │   ├── Skills.tsx
+│   │   ├── Projects.tsx
+│   │   ├── Contact.tsx
+│   │   └── Footer.tsx
+│   ├── data/
+│   │   ├── skills.ts
+│   │   ├── projects.ts
+│   │   ├── contacts.ts
+│   │   ├── experiences.ts
+│   │   └── index.ts
+│   ├── postcss.config.mjs
+│   ├── package.json
+│   └── next.config.ts
+│
+└── captures/                   # 41 captures d'écran
     ├── 01-ssh-service.png
     ├── 02-ssh-windows.png
     ├── 03-docker-installation.png
@@ -1325,7 +2047,28 @@ cv-onepage/
     ├── 18-vagrant-installation.png
     ├── 19-vagrantfile.png
     ├── 20-vagrant-up.png
-    └── 21-vagrant-ssh.png
+    ├── 21-vagrant-ssh.png
+    ├── 22-vagrantfile-q17.png
+    ├── 22-vagrantfile1-q17.png
+    ├── 23-vagrant-status.png
+    ├── 24-nextjs-portfolio.png
+    ├── 25-nextjs-components.png
+    ├── 26-nextjs-structure.png
+    ├── 27-nextjs-data-projects.png
+    ├── 28-nextjs-data-structure.png
+    ├── 29-nextjs-projects-list.png
+    ├── 30-nextjs-project-detail.png
+    ├── 31-nextjs-project-detail-2.png
+    ├── 32-jenkins-pipeline-config.png
+    ├── 33-jenkins-pipeline-build.png
+    ├── 34-jenkins-console-output.png
+    ├── 35-jenkinsfile-github.png
+    ├── 36-jenkins-nodejs-tool.png
+    ├── 37-jenkins-pipeline-stages-v2.png
+    ├── 38-jenkins-install-deps-console.png
+    ├── 39-jenkins-pipeline-stages-v3.png
+    ├── 40-jenkins-build-console.png
+    └── 41-jenkins-build-success.png
 ```
 
 ---
@@ -1365,7 +2108,7 @@ Passionnée par :
 
 # 📌 Conclusion
 
-Ce projet présente l'évolution progressive d'un **mini CV One Page** vers une application **DevSecOps Portfolio**.
+Ce projet présente l'évolution progressive d'un **mini CV One Page** vers une application **DevSecOps Portfolio** complète.
 
 Le projet met en pratique plusieurs compétences :
 
@@ -1390,7 +2133,22 @@ HTML5 / CSS3 / JavaScript
           ↓
        Vagrant
           ↓
-  Automatisation
+   Next.js / React
+          ↓
+     Composants
+          ↓
+      Données (data/)
+          ↓
+     Routage Next.js
+          ↓
+   Jenkins Pipeline
+          ↓
+       CI/CD
 ```
 
-Cette évolution permet de mettre en œuvre les premières étapes d'une démarche **DevOps / DevSecOps**, depuis le développement et le versionnement jusqu'à la conteneurisation et l'automatisation.
+Cette évolution permet de mettre en œuvre **l'ensemble d'une démarche DevOps / DevSecOps** :
+du développement et du versionnement, jusqu'à la conteneurisation, l'automatisation
+et l'intégration continue avec Jenkins.
+
+**🏆 24 questions complétées — TP DevSecOps complet !**
+
