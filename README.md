@@ -2115,50 +2115,401 @@ Passionnée par :
 * Administration Linux
 
 ---
+---
 
-# 📌 Conclusion
+# VII. Automatisation avec Ansible
 
-Ce projet présente l'évolution progressive d'un **mini CV One Page** vers une application **DevSecOps Portfolio** complète.
+### 25. Installation d'Ansible
 
-Le projet met en pratique plusieurs compétences :
+Ansible a été installé sur la VM d'administration (`server26`) pour automatiser la configuration des serveurs distants.
 
-```text
-HTML5 / CSS3 / JavaScript
-          ↓
-        Git
-          ↓
-       GitHub
-          ↓
-      SSH GitHub
-          ↓
-     Ubuntu Server
-          ↓
-        Docker
-          ↓
-        Nginx
-          ↓
-   Docker Compose
-          ↓
-       Jenkins
-          ↓
-       Vagrant
-          ↓
-   Next.js / React
-          ↓
-     Composants
-          ↓
-      Données (data/)
-          ↓
-     Routage Next.js
-          ↓
-   Jenkins Pipeline
-          ↓
-       CI/CD
-```
+**Commande d'installation :**
+\`\`\`bash
+sudo apt update
+sudo apt install -y ansible
+ansible --version
+\`\`\`
 
-Cette évolution permet de mettre en œuvre **l'ensemble d'une démarche DevOps / DevSecOps** :
-du développement et du versionnement, jusqu'à la conteneurisation, l'automatisation
-et l'intégration continue avec Jenkins.
+![Installation d'Ansible](./captures/43-ansible-installation.png)
 
-**🏆 24 questions complétées — TP DevSecOps complet !**
+### 26. Fichier inventory et test de communication
+
+Un fichier `inventory` a été créé pour lister la VM cible (`vm-cible`). La communication a été testée avec succès via le module `ping` d'Ansible.
+
+**Fichier `ansible/inventory` :**
+\`\`\`ini
+[servers]
+vm-cible ansible_host=192.168.159.15 ansible_user=arij
+\`\`\`
+
+**Commande de test :**
+\`\`\`bash
+cd ~/cv-onepage/ansible
+ansible all -i inventory -m ping
+\`\`\`
+
+**Résultat :** `vm-cible | SUCCESS => { "ping": "pong" }`
+
+![Test Ansible Ping](./captures/44-ansible-ping.png)
+
+### 27. Premier playbook Ansible (installation de packages)
+
+Un playbook a été créé pour installer automatiquement `git` et `curl` sur la VM cible.
+
+**Fichier `ansible/install_packages.yml` :**
+\`\`\`yaml
+---
+- name: Installer des packages de base (git et curl)
+  hosts: all
+  become: true
+  tasks:
+    - name: Mettre à jour le cache APT
+      apt:
+        update_cache: yes
+    - name: Installer git et curl
+      apt:
+        name:
+          - git
+          - curl
+        state: present
+\`\`\`
+
+![Code du playbook Ansible](./captures/46-ansible-playbook-code.png)
+
+**Commande d'exécution :**
+\`\`\`bash
+ansible-playbook -i inventory install_packages.yml
+\`\`\`
+
+**Résultat :** `failed=0`, les packages sont installés avec succès.
+
+![Exécution du playbook Ansible](./captures/47-ansible-playbook-execution.png)
+
+### 28. Playbook Ansible pour installer Docker
+
+Un playbook a été créé pour installer Docker de A à Z sur la VM cible.
+
+**Fichier `ansible/install_docker.yml` :**
+\`\`\`yaml
+---
+- name: Installer Docker sur la VM cible
+  hosts: all
+  become: true
+  tasks:
+    - name: Installer les dépendances requises
+      apt:
+        name: [ca-certificates, curl, gnupg]
+        state: present
+        update_cache: yes
+    - name: Créer le dossier des clés APT
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+    - name: Télécharger la clé GPG officielle de Docker
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+    - name: Ajouter le dépôt Docker
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+    - name: Installer Docker et ses composants
+      apt:
+        name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin]
+        state: present
+        update_cache: yes
+    - name: Démarrer et activer le service Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+\`\`\`
+
+![Code du playbook Docker](./captures/48-ansible-docker-code.png)
+
+**Vérification :**
+\`\`\`bash
+ansible all -i inventory -m command -a "docker --version"
+# Résultat : Docker version 29.9.2
+\`\`\`
+
+![Résultat installation Docker](./captures/49-ansible-docker-version.png)
+
+---
+
+# VIII. Création de l'API Node.js / Express
+
+### 29. Création de l'API Node.js / Express
+
+Une API indépendante a été créée dans le dossier `api/`. Elle utilise Node.js et le framework Express.
+
+**Structure du dossier `api/` :**
+\`\`\`text
+cv-onepage/api/
+├── index.js          # Serveur Express
+├── package.json      # Dépendances
+└── node_modules/
+\`\`\`
+
+**Démarrage :**
+\`\`\`bash
+cd ~/cv-onepage/api
+node index.js
+# 🚀 Serveur API démarré sur http://localhost:5000
+\`\`\`
+
+![Serveur API démarré](./captures/50-api-server-started.png)
+![Test Curl de l'API](./captures/51-api-curl-test.png)
+
+### 30. Route GET /api/health
+
+Cette route permet de vérifier que l'API est opérationnelle.
+
+\`\`\`javascript
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "L'API est opérationnelle",
+    timestamp: new Date().toISOString()
+  });
+});
+\`\`\`
+
+**Test :** `curl http://localhost:5000/api/health`
+
+![Test de la route /api/health](./captures/52-api-health-route.png)
+
+### 31. Route GET /api/profile
+
+Cette route retourne les informations principales du portfolio au format JSON.
+
+\`\`\`javascript
+app.get('/api/profile', (req, res) => {
+  res.status(200).json({
+    name: "Arij Belaid",
+    title: "Étudiante en Master Pro DevOps & Cloud",
+    location: "Tunisie",
+    email: "aarijbelaid@gmail.com",
+    github: "https://github.com/arijbelaid",
+    bio: "Passionnée par l'automatisation..."
+  });
+});
+\`\`\`
+
+**Test :** `curl http://localhost:5000/api/profile`
+
+![Test de la route /api/profile](./captures/53-api-profile-route.png)
+
+### 32. Route GET /api/projects
+
+Cette route retourne la liste des projets du portfolio.
+
+\`\`\`javascript
+app.get('/api/projects', (req, res) => {
+  const projects = [
+    { slug: "cicd-ubuntu-server", title: "Chaîne CI/CD...", tags: ["Ubuntu", "Docker"...] },
+    // ... autres projets
+  ];
+  res.status(200).json(projects);
+});
+\`\`\`
+
+**Test :** `curl http://localhost:5000/api/projects`
+
+![Test de la route /api/projects](./captures/54-api-projects-route.png)
+
+### 33. Route GET /api/skills
+
+Cette route retourne la liste des compétences.
+
+\`\`\`javascript
+app.get('/api/skills', (req, res) => {
+  const skills = [
+    { category: "DevOps & Cloud", items: ["Docker", "Jenkins"...] },
+    { category: "Développement", items: ["HTML5 / CSS3"...] }
+  ];
+  res.status(200).json(skills);
+});
+\`\`\`
+
+![Test de la route /api/skills](./captures/55-api-skills-route.png)
+
+### 34. Connexion du Frontend Next.js à l'API Express (Projets)
+
+Le composant `Projects.tsx` a été modifié pour utiliser `fetch` et récupérer les données dynamiquement depuis l'API, au lieu d'utiliser des données locales.
+
+**Explication :** L'utilisation de `useState` et `useEffect` permet de faire un appel asynchrone vers l'API. Le frontend et le backend sont maintenant découplés.
+
+\`\`\`tsx
+useEffect(() => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/projects`)
+    .then(res => res.json())
+    .then(data => setProjects(data));
+}, []);
+\`\`\`
+
+![Projets récupérés depuis l'API](./captures/56-frontend-api-projects.png)
+
+### 35. Connexion du Frontend Next.js à l'API Express (Compétences)
+
+De la même manière, le composant `Skills.tsx` a été modifié pour récupérer les compétences dynamiquement via l'API.
+
+\`\`\`tsx
+useEffect(() => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skills`)
+    .then(res => res.json())
+    .then(data => setSkills(data));
+}, []);
+\`\`\`
+
+![Compétences récupérées depuis l'API](./captures/57-frontend-api-skills.png)
+
+---
+
+# IX. Variables d'environnement et configuration
+
+### 36. Configuration de l'URL de l'API via variable d'environnement
+
+L'URL de l'API a été extraite du code source et placée dans une variable d'environnement (`NEXT_PUBLIC_API_URL`).
+
+**Fichier `.env.local` :**
+\`\`\`env
+NEXT_PUBLIC_API_URL=http://192.168.159.129:5000
+\`\`\`
+
+![Contenu de .env.local](./captures/58-env-local.png)
+
+**Pourquoi l'URL de l'API ne doit pas être codée en dur ?**
+1. **Flexibilité** : L'URL change selon l'environnement (développement local, serveur de test, production). Avec une variable, on change la configuration sans modifier le code.
+2. **Sécurité** : Coder en dur expose les adresses IP internes dans le dépôt Git public.
+3. **Bonnes pratiques** : C'est le standard (12-Factor App) de séparer la configuration du code.
+
+### 37. Fichier d'exemple de variables d'environnement
+
+Un fichier `.env.example` a été créé. Il sert de modèle pour les autres développeurs en listant les variables nécessaires sans exposer les vraies valeurs. Le fichier `.env.local` est lui ignoré par Git.
+
+**Contenu du fichier `.env.example` :**
+\`\`\`env
+# URL de l'API Express
+NEXT_PUBLIC_API_URL=http://localhost:5000
+\`\`\`
+
+![Contenu de .env.example](./captures/59-env-example.png)
+
+---
+
+# X. Dockerisation frontend + API
+
+### 38. Dockerfile pour le Frontend Next.js
+
+Un Dockerfile "multi-stage" a été créé pour le frontend. L'étape `builder` compile l'application, puis l'étape `runner` ne garde que le strict nécessaire pour la production, rendant l'image beaucoup plus légère.
+
+**Fichier `nextjs-portfolio/Dockerfile` :**
+\`\`\`dockerfile
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
+
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["npm", "start"]
+\`\`\`
+
+![Dockerfile Frontend](./captures/60-dockerfile-frontend.png)
+
+### 39. Dockerfile pour l'API Node.js / Express
+
+Un Dockerfile simple a été créé pour l'API. Il utilise l'image légère `node:22-alpine` et installe uniquement les dépendances de production.
+
+**Fichier `api/Dockerfile` :**
+\`\`\`dockerfile
+FROM node:22-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --production
+COPY . .
+EXPOSE 5000
+CMD ["node", "index.js"]
+\`\`\`
+
+![Dockerfile API](./captures/61-dockerfile-api.png)
+
+### 40. Construction des images Docker
+
+Deux images Docker ont été construites : `devsecops-portfolio` et `devsecops-api`.
+
+**Commandes utilisées :**
+\`\`\`bash
+docker build -t devsecops-portfolio ./nextjs-portfolio
+docker build -t devsecops-api ./api
+docker images | grep -E "devsecops-portfolio|devsecops-api"
+\`\`\`
+
+![Construction des images Docker](./captures/62-docker-images-build.png)
+
+### 41. Docker Compose pour l'API et le Frontend
+
+Un fichier `docker-compose.yml` a été créé à la racine du projet pour lancer l'API et le Frontend ensemble dans un réseau Docker commun.
+
+**Fichier `docker-compose.yml` :**
+\`\`\`yaml
+services:
+  api:
+    image: devsecops-api
+    container_name: devsecops-api-container
+    ports:
+      - "5000:5000"
+    networks:
+      - devsecops-network
+
+  frontend:
+    image: devsecops-portfolio
+    container_name: devsecops-frontend-container
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://192.168.159.129:5000
+    depends_on:
+      - api
+    networks:
+      - devsecops-network
+
+networks:
+  devsecops-network:
+    driver: bridge
+\`\`\`
+
+![Fichier Docker Compose](./captures/63-docker-compose-file.png)
+
+**Commande de lancement :**
+\`\`\`bash
+docker compose up -d
+docker compose ps
+\`\`\`
+
+![Résultat docker compose ps](./captures/63-docker-compose-ps.png)
+
+### 42. Vérification de la communication via Docker Compose
+
+Le portfolio a été testé depuis la machine physique pour s'assurer que le Frontend (dans son conteneur) communique bien avec l'API (dans son conteneur) via le réseau Docker.
+
+**Explication :**
+Docker Compose crée un réseau interne (`devsecops-network`) qui permet aux conteneurs de se parler. L'API expose le port 5000 vers l'extérieur, et le navigateur du client fait une requête vers l'IP de la VM sur ce port. Le Frontend, compilé avec la variable `NEXT_PUBLIC_API_URL`, sait exactement où chercher les données.
+
+![Portfolio avec données de l'API via Docker](./captures/64-docker-compose-frontend.png)
+
+---
 
