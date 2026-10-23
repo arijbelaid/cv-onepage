@@ -17,39 +17,6 @@ Le rapport détaillé du projet est disponible ici :
 
 ---
 
-
-
-
-## 📋 Sommaire
-
-* [1. Installation d'Ubuntu Server et accès SSH](#1-installation-dubuntu-server-et-accès-ssh)
-* [2. Test de l'accès SSH depuis la machine physique](#2-test-de-laccès-ssh-depuis-la-machine-physique)
-* [3. Installation de Docker](#3-installation-de-docker)
-* [4. Installation et configuration de Jenkins](#4-installation-et-configuration-de-jenkins)
-* [5. Création du mini CV One Page](#5-création-du-mini-cv-one-page)
-* [6. Configuration des Push GitHub via SSH](#6-configuration-des-push-github-via-ssh)
-* [7. Évolution vers un DevSecOps Portfolio](#7-évolution-vers-un-devsecops-portfolio)
-* [8. Section DevSecOps Skills](#8-section-devsecops-skills)
-* [9. Génération dynamique des Projects](#9-génération-dynamique-des-projects)
-* [10. Dockerisation avec Nginx](#10-dockerisation-avec-nginx)
-* [11. Construction de l'image cv-docker](#11-construction-de-limage-cv-docker)
-* [12. Exécution du conteneur](#12-exécution-du-conteneur)
-* [13. Déploiement avec Docker Compose](#13-déploiement-avec-docker-compose)
-* [14. Publication sur GitHub via SSH](#14-publication-sur-github-via-ssh)
-* [15. Installation et utilisation de Vagrant](#15-installation-et-utilisation-de-vagrant)
-* [16. Connexion avec vagrant ssh](#16-connexion-avec-vagrant-ssh)
-* [17. Configuration automatique de la VM avec Vagrant](#17-configuration-automatique-de-la-vm-avec-vagrant)
-* [18. Nouvelle version du Portfolio avec Next.js](#18-nouvelle-version-du-portfolio-avec-nextjs)
-* [19. Refactorisation en composants réutilisables](#19-refactorisation-en-composants-réutilisables)
-* [20. Séparation des données](#20-séparation-des-données-dans-des-fichiers-dédiés)
-* [21. Pages dédiées aux projets](#21-pages-dédiées-aux-projets)
-* [22. Premier Jenkins Pipeline](#22-premier-jenkins-pipeline)
-* [23. Installation des dépendances Next.js](#23-installation-des-dépendances-nextjs-dans-le-pipeline)
-* [24. Build de l'application Next.js](#24-build-de-lapplication-nextjs-dans-le-pipeline)
-
-
----
-
 # 1. Installation d'Ubuntu Server et accès SSH
 
 ## 🎯 Objectif
@@ -1893,228 +1860,16 @@ pipeline {
 
 ---
 
-# 🏆 Pipeline CI/CD complet
-
-```
-📦 Pipeline DevSecOps-Portfolio-Pipeline
-│
-├── 🟢 Stage 1 : Checkout                (récupère dépôt Git)
-├── 🟢 Stage 2 : Verify                  (vérifie fichiers)
-├── 🟢 Stage 3 : Install Dependencies    (npm install - 371 packages)
-└── 🟢 Stage 4 : Build                   (npm run build - Next.js 16)
-```
-
 ---
 
-# 🐳 Architecture du projet
+# 🎯 Objectif de l'Activité 3
 
-L'évolution du projet peut être représentée ainsi :
+Cette troisième et dernière activité a pour but de professionnaliser l'architecture du projet en ajoutant :
+1. **L'automatisation** de la configuration avec **Ansible**.
+2. Le développement d'une **API Node.js / Express** indépendante pour servir les données du portfolio.
+3. La **connexion du Frontend Next.js** à cette API en utilisant des variables d'environnement.
+4. La **conteneurisation** de l'API et du Frontend avec Docker, et leur orchestration conjointe via **Docker Compose**.
 
-```text
-                    ┌─────────────────────┐
-                    │    Machine Windows  │
-                    │      physique      │
-                    └──────────┬──────────┘
-                               │
-                         SSH / HTTP
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Ubuntu Server VM  │
-                    ├─────────────────────┤
-                    │         SSH         │
-                    │       Jenkins       │
-                    │        Docker       │
-                    │       Vagrant       │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │       Docker        │
-                    │  ┌───────────────┐  │
-                    │  │ Nginx         │  │
-                    │  │ Portfolio     │  │
-                    │  └───────────────┘  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    Next.js App      │
-                    │  (components/data)  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                         GitHub Pages
-                               │
-                               ▼
-              https://arijbelaid.github.io/
-                       cv-onepage/
-```
-
----
-
-# 🧰 Technologies utilisées
-
-## Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-* React / Next.js 16
-* Tailwind CSS
-* TypeScript
-
-## Versionnement
-
-* Git
-* GitHub
-* GitHub Pages
-* SSH
-
-## DevOps / DevSecOps
-
-* Ubuntu Server
-* Docker
-* Nginx
-* Docker Compose
-* Jenkins
-* Kubernetes
-* Ansible
-* Terraform
-* Argo CD
-
-## Automatisation
-
-* Vagrant
-* VirtualBox
-
----
-
-# 📁 Structure du projet
-
-```text
-cv-onepage/
-│
-├── index.html                  # Portfolio v1 (HTML/CSS/JS)
-├── style.css
-├── script.js
-│
-├── Dockerfile                  # Docker (Q10)
-├── nginx.conf
-├── .dockerignore
-├── docker-compose.yml          # Docker Compose (Q13)
-│
-├── Jenkinsfile                 # Jenkins Pipeline (Q22-Q24)
-├── Vagrantfile                 # Vagrant (Q17)
-│
-├── README.md
-├── rapport-devsecops-arij-belaid.pdf
-│
-├── nextjs-portfolio/           # ⭐ Version Next.js (Q18-Q21)
-│   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── projects/
-│   │   │   ├── page.tsx
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx
-│   │   └── globals.css
-│   ├── components/
-│   │   ├── Header.tsx
-│   │   ├── About.tsx
-│   │   ├── Skills.tsx
-│   │   ├── Projects.tsx
-│   │   ├── Contact.tsx
-│   │   └── Footer.tsx
-│   ├── data/
-│   │   ├── skills.ts
-│   │   ├── projects.ts
-│   │   ├── contacts.ts
-│   │   ├── experiences.ts
-│   │   └── index.ts
-│   ├── postcss.config.mjs
-│   ├── package.json
-│   └── next.config.ts
-│
-└── captures/                   # 41 captures d'écran
-    ├── 01-ssh-service.png
-    ├── 02-ssh-windows.png
-    ├── 03-docker-installation.png
-    ├── 04-docker-service-test.png
-    ├── 05-jenkins-service.png
-    ├── 06-jenkins-web.png
-    ├── 07-mini-cv.png
-    ├── 08-github-ssh-key.png
-    ├── 09-github-ssh-test.png
-    ├── 10-devsecops-portfolio.png
-    ├── 11-devsecops-skills.png
-    ├── 12-projects-dynamic.png
-    ├── 13-docker-build-cv-docker.png
-    ├── 14-docker-run-ps.png
-    ├── 15-portfolio-docker-windows.png
-    ├── 16-docker-compose-ps.png
-    ├── 17-git-push-github.png
-    ├── 18-vagrant-installation.png
-    ├── 19-vagrantfile.png
-    ├── 20-vagrant-up.png
-    ├── 21-vagrant-ssh.png
-    ├── 22-vagrantfile-q17.png
-    ├── 22-vagrantfile1-q17.png
-    ├── 23-vagrant-status.png
-    ├── 24-nextjs-portfolio.png
-    ├── 25-nextjs-components.png
-    ├── 26-nextjs-structure.png
-    ├── 27-nextjs-data-projects.png
-    ├── 28-nextjs-data-structure.png
-    ├── 29-nextjs-projects-list.png
-    ├── 30-nextjs-project-detail.png
-    ├── 31-nextjs-project-detail-2.png
-    ├── 32-jenkins-pipeline-config.png
-    ├── 33-jenkins-pipeline-build.png
-    ├── 34-jenkins-console-output.png
-    ├── 35-jenkinsfile-github.png
-    ├── 36-jenkins-nodejs-tool.png
-    ├── 37-jenkins-pipeline-stages-v2.png
-    ├── 38-jenkins-install-deps-console.png
-    ├── 39-jenkins-pipeline-stages-v3.png
-    ├── 40-jenkins-build-console.png
-    └── 41-jenkins-build-success.png
-```
-
----
-
-# 🌐 Liens
-
-### 🔗 Dépôt GitHub
-
-👉 **https://github.com/arijbelaid/cv-onepage**
-
-### 🚀 Démo en ligne
-
-👉 **https://arijbelaid.github.io/cv-onepage/**
-
----
-
-# 👩‍💻 Auteur
-
-**Arij Belaid**
-
-Étudiante en **Master Pro DevOps & Cloud**
-
-Titulaire d'une **Licence en Technologie de l'Informatique — Développement des Systèmes d'Information**.
-
-Passionnée par :
-
-* DevOps
-* DevSecOps
-* Cloud Computing
-* Automatisation
-* Conteneurisation
-* CI/CD
-* Infrastructure as Code
-* Administration Linux
-
----
 ---
 
 # VII. Automatisation avec Ansible
@@ -2334,6 +2089,8 @@ app.get('/api/skills', (req, res) => {
 });
 \`\`\`
 
+**Test :** `curl http://localhost:5000/api/skills`
+
 ![Test de la route /api/skills](./captures/55-api-skills-route.png)
 
 ### 34. Connexion du Frontend Next.js à l'API Express (Projets)
@@ -2506,6 +2263,12 @@ docker compose ps
 
 Le portfolio a été testé depuis la machine physique pour s'assurer que le Frontend (dans son conteneur) communique bien avec l'API (dans son conteneur) via le réseau Docker.
 
+**Explication :**
+Docker Compose crée un réseau interne (`devsecops-network`) qui permet aux conteneurs de se parler. L'API expose le port 5000 vers l'extérieur, et le navigateur du client fait une requête vers l'IP de la VM sur ce port. Le Frontend, compilé avec la variable `NEXT_PUBLIC_API_URL`, sait exactement où chercher les données.
+
+![Portfolio avec données de l'API via Docker](./captures/64-docker-compose-frontend.png)
+
+---
 **Explication :**
 Docker Compose crée un réseau interne (`devsecops-network`) qui permet aux conteneurs de se parler. L'API expose le port 5000 vers l'extérieur, et le navigateur du client fait une requête vers l'IP de la VM sur ce port. Le Frontend, compilé avec la variable `NEXT_PUBLIC_API_URL`, sait exactement où chercher les données.
 
