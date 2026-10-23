@@ -2249,7 +2249,8 @@ networks:
     driver: bridge
 \`\`\`
 
-![Fichier Docker Compose](./captures/63-docker-compose-file.png)
+![Fichier Docker Compose](./captures/63-docker-compose-ps.png)
+)
 
 **Commande de lancement :**
 \`\`\`bash
@@ -2257,7 +2258,7 @@ docker compose up -d
 docker compose ps
 \`\`\`
 
-![Résultat docker compose ps](./captures/63-docker-compose-ps.png)
+![Résultat docker compose ps](./captur.png)
 
 ### 42. Vérification de la communication via Docker Compose
 
