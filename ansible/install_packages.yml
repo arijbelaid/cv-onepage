@@ -1,0 +1,15 @@
+---
+- name: Installer des packages de base (git et curl)
+  hosts: all
+  become: true
+  tasks:
+    - name: Mettre à jour le cache APT
+      apt:
+        update_cache: yes
+
+    - name: Installer git et curl
+      apt:
+        name:
+          - git
+          - curl
+        state: present

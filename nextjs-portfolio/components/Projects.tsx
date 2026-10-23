@@ -1,14 +1,58 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { projectsData } from "@/data";
+
+interface Project {
+  slug: string;
+  title: string;
+  description: string;
+  tags: string[];
+  year: string;
+}
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // 1. On crée un contrôleur pour pouvoir annuler la requête si besoin
+    const controller = new AbortController();
+
+    // 2. On passe le signal au fetch
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/projects`, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la récupération des projets");
+        return res.json();
+      })
+      .then((data) => {
+        setProjects(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // 3. On ignore l'erreur si c'est une annulation normale (React Strict Mode)
+        if (err.name !== "AbortError") {
+          console.error(err);
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+
+    // 4. Si le composant est démonté, on annule la requête
+    return () => controller.abort();
+  }, []);
+
+  if (loading) return <div className="text-center py-10 text-cyan-400">⏳ Chargement des projets depuis l'API...</div>;
+  if (error) return <div className="text-center py-10 text-red-500">❌ Erreur : {error}</div>;
+
   return (
     <section id="projects" className="scroll-mt-24">
       <h2 className="text-3xl font-bold mb-6 border-b border-slate-700 pb-2">
         <span className="text-cyan-400 font-mono text-xl">03.</span> Projects
       </h2>
       <div className="space-y-4">
-        {projectsData.map((project) => (
+        {projects.map((project) => (
           <Link
             key={project.slug}
             href={`/projects/${project.slug}`}
@@ -30,14 +74,6 @@ export default function Projects() {
             </div>
           </Link>
         ))}
-      </div>
-      <div className="mt-6">
-        <Link
-          href="/projects"
-          className="text-cyan-400 hover:underline font-mono text-sm"
-        >
-          Voir tous les projets →
-        </Link>
       </div>
     </section>
   );

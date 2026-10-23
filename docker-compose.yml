@@ -1,29 +1,26 @@
-# ============================================================
-# DevSecOps Portfolio — Docker Compose
-# ============================================================
-# Déploiement du portfolio servi par Nginx (image cv-docker)
-# Lancement : docker compose up -d
-# Arrêt     : docker compose down
-# ============================================================
-
 services:
-  portfolio:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: cv-docker:latest
-    container_name: cv-portfolio-compose
+  api:
+    image: devsecops-api
+    container_name: devsecops-api-container
     ports:
-      - "8083:80"
+      - "5000:5000"
     restart: unless-stopped
+    networks:
+      - devsecops-network
+
+  frontend:
+    image: devsecops-portfolio
+    container_name: devsecops-frontend-container
+    ports:
+      - "3000:3000"
     environment:
-      - TZ=Africa/Tunis
-    labels:
-      - "com.arijbelaid.portfolio=true"
-      - "com.arijbelaid.version=1.0"
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"] 
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+      - NEXT_PUBLIC_API_URL=http://192.168.159.129:5000
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - devsecops-network
+
+networks:
+  devsecops-network:
+    driver: bridge
